@@ -151,6 +151,17 @@ if test -d $build_dir/.gem; then
   cp -r $build_dir/.gem $cache_dir/ruby
 fi
 
+# Check and install bower and dependencies
+if [ -f $build_dir/bower.json ]; then
+  npm install bower
+  echo "-----> Found bower.json, cleaning bower chache"
+  $build_dir/node_modules/.bin/bower cache clean
+  echo "-----> Running bower install"
+  $build_dir/node_modules/.bin/bower install
+else
+  echo "-----> No Bower.json found"
+fi
+
 # Testing for gulp
 is_gulpfile_present= [ -f $build_dir/gulpfile.js ];
 if $is_gulpfile_present; then
